@@ -5,5 +5,4 @@ public class AmazonDbContext : DbContext
     { }
 
     public DbSet<ProductEntity> Products { get; set; }
-
 }
