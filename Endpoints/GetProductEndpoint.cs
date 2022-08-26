@@ -1,24 +1,22 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿namespace API.Endpoints;
 
-namespace API.Endpoints;
-
-[HttpGet("/api/customer/{id}"), AllowAnonymous]
+[HttpGet("/api/products/{id}"), AllowAnonymous]
 public class GetProductEndpoint : Endpoint<GetProductRequest, GetProductResponse>
 {
-    private readonly AmazonDbContext _context;
+    private readonly IProductRepository _productRepository;
 
-    public GetProductEndpoint(AmazonDbContext context)
+    public GetProductEndpoint(IProductRepository productRepository)
     {
-        _context = context;
+        _productRepository = productRepository;
     }
 
     public override async Task HandleAsync(GetProductRequest req, CancellationToken ct)
     {
-        var product = await _context.Products.FindAsync(req.Id);
+        var product = await _productRepository.GetProductByIdAsync(req.Id);
 
         if (product == null)
         {
-            await SendNotFoundAsync();
+            await SendNotFoundAsync(ct);
             return;
         }
 
@@ -31,6 +29,6 @@ public class GetProductEndpoint : Endpoint<GetProductRequest, GetProductResponse
             Price = product.Price
         };
 
-        await SendOkAsync(thingRoReturn);
+        await SendOkAsync(thingRoReturn, ct);
     }
 }
