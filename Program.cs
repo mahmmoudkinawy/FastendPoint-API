@@ -7,6 +7,8 @@ builder.Services.AddDbContext<AmazonDbContext>(options =>
 
 var app = builder.Build();
 
+app.UseAuthorization();
+
 app.UseFastEndpoints();
 
 await app.RunAsync();
