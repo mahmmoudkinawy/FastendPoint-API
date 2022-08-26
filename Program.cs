@@ -11,6 +11,8 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseAuthorization();
 
 app.UseFastEndpoints();
