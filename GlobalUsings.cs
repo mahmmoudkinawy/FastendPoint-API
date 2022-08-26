@@ -8,3 +8,6 @@ global using API.Contracts.Responses;
 global using API.Interfaces;
 global using Microsoft.AspNetCore.Authorization;
 global using API.Repositories;
+global using AutoMapper;
+global using System.Reflection;
+global using IMapper = AutoMapper.IMapper;

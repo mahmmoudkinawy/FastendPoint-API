@@ -1,26 +1,21 @@
-﻿//namespace API.Endpoints;
-//public class GetAllProductsEndpoint : EndpointWithoutRequest<List<GetProductResponse>>
-//{
-//    private readonly AmazonDbContext _context;
+﻿namespace API.Endpoints;
 
-//    public GetAllProductsEndpoint(AmazonDbContext context)
-//    {
-//        _context = context;
-//    }
+[HttpGet("/api/products"), AllowAnonymous]
+public class GetAllProductsEndpoint : EndpointWithoutRequest<IReadOnlyList<GetProductResponse>>
+{
+    private readonly IProductRepository _productRepository;
+    private readonly IMapper _mapper;
 
-//    public override void Configure()
-//    {
-//        Verbs(Http.GET);
-//        Routes("/api/products");
-//        AllowAnonymous();
-//    }
+    public GetAllProductsEndpoint(IProductRepository productRepository, IMapper mapper)
+    {
+        _productRepository = productRepository;
+        _mapper = mapper;
+    }
 
-//    public override async Task HandleAsync(CancellationToken ct)
-//    {
-//        var temp = new List<GetProductResponse>();
-//        var products = await _context.Products.ToListAsync(cancellationToken: ct);
-//        var productsResponse = 
+    public override async Task HandleAsync(CancellationToken ct)
+    {
+        var products = await _productRepository.GetAllProductsAsync();
 
-//        await SendOkAsync(products);
-//    }
-//}
+        await SendOkAsync(_mapper.Map<IReadOnlyList<GetProductResponse>>(products), ct);
+    }
+}

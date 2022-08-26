@@ -4,10 +4,12 @@
 public class GetProductEndpoint : Endpoint<GetProductRequest, GetProductResponse>
 {
     private readonly IProductRepository _productRepository;
+    private readonly IMapper _mapper;
 
-    public GetProductEndpoint(IProductRepository productRepository)
+    public GetProductEndpoint(IProductRepository productRepository, IMapper mapper)
     {
         _productRepository = productRepository;
+        _mapper = mapper;
     }
 
     public override async Task HandleAsync(GetProductRequest req, CancellationToken ct)
@@ -20,15 +22,6 @@ public class GetProductEndpoint : Endpoint<GetProductRequest, GetProductResponse
             return;
         }
 
-        var thingRoReturn = new GetProductResponse
-        {
-            Id = product.Id,
-            CountInStock = product.CountInStock,
-            Created = product.Created,
-            Name = product.Name,
-            Price = product.Price
-        };
-
-        await SendOkAsync(thingRoReturn, ct);
+        await SendOkAsync(_mapper.Map<GetProductResponse>(product), ct);
     }
 }
