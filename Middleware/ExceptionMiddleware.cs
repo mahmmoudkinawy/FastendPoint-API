@@ -1,4 +1,6 @@
-﻿namespace API.Middleware;
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace API.Middleware;
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;

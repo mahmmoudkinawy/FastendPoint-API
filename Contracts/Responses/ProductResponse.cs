@@ -1,5 +1,5 @@
 ﻿namespace API.Contracts.Responses;
-public class GetProductResponse
+public class ProductResponse
 {
     public int Id { get; set; }
     public DateTime Created { get; set; } 

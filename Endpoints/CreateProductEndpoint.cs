@@ -1,15 +1,23 @@
 ﻿namespace API.Endpoints;
-public class CreateProductEndpoint:Endpoint<CreateProductRequest>
+
+[HttpPost("api/products"), AllowAnonymous]
+public class CreateProductEndpoint : Endpoint<CreateProductRequest, ProductResponse>
 {
-    public override void Configure()
+    private readonly IProductRepository _productRepository;
+    private readonly IMapper _mapper;
+
+    public CreateProductEndpoint(IProductRepository productRepository, IMapper mapper)
     {
-        Verbs(Http.POST);
-        Routes("/api/products");
-        AllowAnonymous();
+        _productRepository = productRepository;
+        _mapper = mapper;
     }
 
-    public override Task HandleAsync(CreateProductRequest req, CancellationToken ct)
+    public override async Task HandleAsync(CreateProductRequest req, CancellationToken ct)
     {
-        return base.HandleAsync(req, ct);
+        var product = _mapper.Map<ProductEntity>(req);
+
+        await _productRepository.AddProduct(product);
+
+        await SendNoContentAsync(ct);
     }
 }

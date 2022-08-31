@@ -3,6 +3,8 @@ public class ProductsMapping : Profile
 {
 	public ProductsMapping()
 	{
-		CreateMap<ProductEntity, GetProductResponse>();
+		CreateMap<ProductEntity, ProductResponse>();
+		CreateMap<CreateProductRequest, ProductEntity>()
+			.ForMember(opt => opt.Created, opt => opt.MapFrom(val => DateTime.UtcNow));
 	}
 }

@@ -1,7 +1,7 @@
 ﻿namespace API.Endpoints;
 
 [HttpGet("/api/products"), AllowAnonymous]
-public class GetAllProductsEndpoint : EndpointWithoutRequest<IReadOnlyList<GetProductResponse>>
+public class GetAllProductsEndpoint : EndpointWithoutRequest<IReadOnlyList<ProductResponse>>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
@@ -16,6 +16,6 @@ public class GetAllProductsEndpoint : EndpointWithoutRequest<IReadOnlyList<GetPr
     {
         var products = await _productRepository.GetAllProductsAsync();
 
-        await SendOkAsync(_mapper.Map<IReadOnlyList<GetProductResponse>>(products), ct);
+        await SendOkAsync(_mapper.Map<IReadOnlyList<ProductResponse>>(products), ct);
     }
 }

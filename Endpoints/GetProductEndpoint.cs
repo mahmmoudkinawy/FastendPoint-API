@@ -1,7 +1,7 @@
 ﻿namespace API.Endpoints;
 
 [HttpGet("/api/products/{id}"), AllowAnonymous]
-public class GetProductEndpoint : Endpoint<GetProductRequest, GetProductResponse>
+public class GetProductEndpoint : Endpoint<GetProductRequest, ProductResponse>
 {
     private readonly IProductRepository _productRepository;
     private readonly IMapper _mapper;
@@ -22,6 +22,6 @@ public class GetProductEndpoint : Endpoint<GetProductRequest, GetProductResponse
             return;
         }
 
-        await SendOkAsync(_mapper.Map<GetProductResponse>(product), ct);
+        await SendOkAsync(_mapper.Map<ProductResponse>(product), ct);
     }
 }
