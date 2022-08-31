@@ -6,5 +6,6 @@ public class ProductsMapping : Profile
 		CreateMap<ProductEntity, ProductResponse>();
 		CreateMap<CreateProductRequest, ProductEntity>()
 			.ForMember(opt => opt.Created, opt => opt.MapFrom(val => DateTime.UtcNow));
+		CreateMap<UpdateProductRequest, ProductEntity>();
 	}
 }
