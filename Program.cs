@@ -23,4 +23,18 @@ app.UseAuthorization();
 
 app.UseFastEndpoints();
 
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+try
+{
+    var dbContext = services.GetRequiredService<AmazonDbContext>();
+    await dbContext.Database.MigrateAsync();
+    await Seeding.SeedProducts(dbContext);
+}
+catch (Exception ex)
+{
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    logger.LogError(ex, "There was an error in migrations!");
+}
+
 await app.RunAsync();

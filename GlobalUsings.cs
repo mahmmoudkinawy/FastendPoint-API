@@ -16,3 +16,4 @@ global using System.Reflection;
 global using System.Text.Json;
 global using API.Middleware;
 global using FluentValidation;
+global using Bogus;
