@@ -1,21 +1,25 @@
 ﻿namespace API.Endpoints;
 
 [HttpGet("/api/products"), AllowAnonymous]
-public class GetAllProductsEndpoint : EndpointWithoutRequest<IReadOnlyList<ProductResponse>>
+public class GetAllProductsEndpoint : Endpoint<PaginationParams, PagerModel<ProductResponse>>
 {
     private readonly IProductRepository _productRepository;
-    private readonly IMapper _mapper;
 
-    public GetAllProductsEndpoint(IProductRepository productRepository, IMapper mapper)
+    public GetAllProductsEndpoint(IProductRepository productRepository)
     {
         _productRepository = productRepository;
-        _mapper = mapper;
     }
 
-    public override async Task HandleAsync(CancellationToken ct)
+    public override async Task HandleAsync([FromQuery] PaginationParams req, CancellationToken ct)
     {
-        var products = await _productRepository.GetAllProductsAsync();
+        var products = await _productRepository.GetAllProductsAsync(req);
 
-        await SendOkAsync(_mapper.Map<IReadOnlyList<ProductResponse>>(products), ct);
+        HttpContext.Response.AddPaginationHeader(
+            products.CurrentPage,
+            products.PageSize,
+            products.TotalPages,
+            products.TotalCount);
+
+        await SendOkAsync(products, ct);
     }
 }

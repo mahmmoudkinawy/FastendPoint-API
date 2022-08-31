@@ -1,5 +1,7 @@
 ﻿global using HttpGetAttribute = FastEndpoints.HttpGetAttribute;
 global using HttpPostAttribute = FastEndpoints.HttpPostAttribute;
+global using HttpDeleteAttribute = FastEndpoints.HttpDeleteAttribute;
+global using HttpPutAttribute = FastEndpoints.HttpPutAttribute;
 global using IMapper = AutoMapper.IMapper;
 global using Microsoft.EntityFrameworkCore;
 global using API.Entities;
@@ -17,3 +19,8 @@ global using System.Text.Json;
 global using API.Middleware;
 global using FluentValidation;
 global using Bogus;
+global using API.Helpers;
+global using AutoMapper.QueryableExtensions;
+global using API.Extensions;
+global using Microsoft.AspNetCore.Mvc;
+

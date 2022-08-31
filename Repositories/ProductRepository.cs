@@ -2,10 +2,12 @@
 public class ProductRepository : IProductRepository
 {
     private readonly AmazonDbContext _context;
+    private readonly IMapper _mapper;
 
-    public ProductRepository(AmazonDbContext context)
+    public ProductRepository(AmazonDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task AddProduct(ProductEntity product)
@@ -14,9 +16,15 @@ public class ProductRepository : IProductRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IReadOnlyList<ProductEntity>> GetAllProductsAsync()
+    public async Task<PagerModel<ProductResponse>> GetAllProductsAsync(
+        PaginationParams paginationParams)
     {
-        return await _context.Products.ToListAsync();
+        var query = _context.Products.AsQueryable();
+
+        return await PagerModel<ProductResponse>.CreateAsync(
+            query.ProjectTo<ProductResponse>(_mapper.ConfigurationProvider),
+            paginationParams.PageNumber,
+            paginationParams.PageSize);
     }
 
     public async Task<ProductEntity> GetProductByIdAsync(int id)

@@ -1,7 +1,7 @@
 ﻿namespace API.Interfaces;
 public interface IProductRepository
 {
-    Task<IReadOnlyList<ProductEntity>> GetAllProductsAsync();
+    Task<PagerModel<ProductResponse>> GetAllProductsAsync(PaginationParams paginationParams);
     Task<ProductEntity> GetProductByIdAsync(int id);
     Task AddProduct(ProductEntity product);
     Task RemoveProduct(ProductEntity product);
